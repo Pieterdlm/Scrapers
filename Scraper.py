@@ -25,11 +25,12 @@ headers = {
     }
 
 lijstvanlinks = []
-lijstVanFotoLinks = []
+lijstVanProductPaginas = []
+lijstvanFotoLinks = []
 
 
 with open('decathlon_thermoshirt.csv', 'w', encoding='utf-8', newline='') as csvfile:
-    fieldnames = ['productPage', 'productName', 'productPicture']
+    fieldnames = ['productPage', 'productPicture']
     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
     writer.writeheader()
 
@@ -50,16 +51,23 @@ with open('decathlon_thermoshirt.csv', 'w', encoding='utf-8', newline='') as csv
 
         for tag in product_tags:
             productPage = tag.find_element(By.XPATH, ".//a").get_attribute("href")
-            lijstVanFotoLinks.append(productPage)
+            lijstVanProductPaginas.append(productPage)
             reviewLink = productPage.replace('/p/', '/r/')
             print(reviewLink)
             lijstvanlinks.append(reviewLink)
 
-        for fotolink in lijstVanFotoLinks:
+        for fotolink in lijstVanProductPaginas:
             driver.get(fotolink)
-            time.sleep(1)
+            #time.sleep(1)
             productPicture = driver.find_element(By.XPATH, "//*[@id='app']/main/article/div[2]/div[2]/div[2]/div/div/section[2]/img").get_attribute("src")
             print(productPicture)
+            lijstvanFotoLinks.append(productPicture)
+
+
+    for productpagina, linkVanFoto in zip(lijstVanProductPaginas, lijstvanFotoLinks):
+        writer.writerow({'productPage': lijstVanProductPaginas[0], 'productPicture': lijstvanFotoLinks[2]})
+
+
 
 
     for link in lijstvanlinks:
