@@ -17,7 +17,7 @@ with open(input_file, "r", newline="", encoding="utf-8") as infile, \
 
     # write headers to output files
     product_writer.writerow(["product_number", "product_name", "price", "image_link", "color"])
-    review_writer.writerow(["product_number", "review_text"])
+    review_writer.writerow(["product_number", "review_text", "review_rating"])
 
     # iterate over input rows and write data to output files
     product_number = 0
@@ -28,7 +28,8 @@ with open(input_file, "r", newline="", encoding="utf-8") as infile, \
         # write review data to reviews.csv
         reviews = eval(row["Review"])
         for review in reviews:
-            review_writer.writerow([product_number, review])
+
+            review_writer.writerow([product_number, review, ""])
 
         # increment product number for next row
         product_number += 1
